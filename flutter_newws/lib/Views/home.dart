@@ -1,3 +1,5 @@
+import 'package:flutter_newws/helper/news.dart';
+import 'package:flutter_newws/models/article_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_newws/helper/data.dart';
@@ -10,12 +12,26 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
 
+
   List<Category_Model> categories = new List<Category_Model>() ;
+  List<ArticleModel> articles = new List<ArticleModel>();
+  bool _loading = true ;
   void initState(){
     super.initState() ;
         categories = getCategory() ;
+        getNews() ;
+
   }
 
+  getNews()async{
+    News newsClass =  News() ;
+    await newsClass.getNews() ;
+    articles  = newsClass.news ;
+    setState(() {
+      _loading = false  ;
+    });
+
+  }
 
 @override
   Widget build(BuildContext context) {
@@ -33,10 +49,16 @@ class _HomeState extends State<Home> {
         ),
         elevation: 1 ,
       ),
-      body: Container(
+      body: _loading ? Center(
+        child: Container(
+          child: CircularProgressIndicator(),
+        ),
+
+
+      ) : Container(
         child: Column(
           children: <Widget>[
-            Container(
+            Container( ///categories
               padding: EdgeInsets.symmetric(horizontal: 16),
               height: 100,
               child: ListView.builder(
@@ -52,6 +74,23 @@ class _HomeState extends State<Home> {
                   }
             )
             ),
+            ///blogs
+            //////
+            //
+            //
+
+            Container(
+              child: ListView.builder(
+                  itemCount: articles.length , shrinkWrap: true,
+                itemBuilder: (context , index ){
+
+                return BlockTile(
+                  imgUrl: articles[index].urlToimg,
+                  title:  articles[index].title,
+                  description: articles[index].description,
+                ) ;
+              },),
+            )
           ],
         ),
       ),
@@ -67,7 +106,7 @@ class CategoryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        
+
       },
       child: Container(
         margin: EdgeInsets.only(right: 16),
@@ -94,6 +133,28 @@ class CategoryTile extends StatelessWidget {
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+
+
+class BlockTile extends StatelessWidget {
+  final String imgUrl  ,  title,   description;
+
+  const BlockTile({ @required this.imgUrl, @required this.title,@required this.description}) ;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Image.network(imgUrl) ,
+          Text(title) ,
+          Text(description)
+        ],
       ),
     );
   }
