@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_newws/helper/news.dart';
 import 'package:flutter_newws/models/article_model.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ class _HomeState extends State<Home> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("Flutter") ,
+            Text("INSTA") ,
             Text("News" , style: TextStyle(
                 color: Colors.blueAccent
             ),)
@@ -53,14 +54,16 @@ class _HomeState extends State<Home> {
         child: Container(
           child: CircularProgressIndicator(),
         ),
-
-
-      ) : Container(
+      ) : SingleChildScrollView(
+        child: Container(
         child: Column(
           children: <Widget>[
-            Container( ///categories
+
+            Container(
+              ///categories
+              ///
               padding: EdgeInsets.symmetric(horizontal: 16),
-              height: 100,
+              height: 85,
               child: ListView.builder(
                   itemCount : categories.length,
                   shrinkWrap: true,
@@ -75,23 +78,22 @@ class _HomeState extends State<Home> {
             )
             ),
             ///blogs
-            //////
-            //
-            //
 
             Container(
               child: ListView.builder(
-                  itemCount: articles.length , shrinkWrap: true,
+                  itemCount: articles.length ,
+                shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
                 itemBuilder: (context , index ){
-
-                return BlockTile(
-                  imgUrl: articles[index].urlToimg,
-                  title:  articles[index].title,
-                  description: articles[index].description,
+                return BlogTile(
+                  imgUrl: articles[index].urlToimg  ?? "",
+                  title:  articles[index].title ?? " " ,
+                  description: articles[index].description ?? "",
                 ) ;
-              },),
+              }),
             )
           ],
+        ),
         ),
       ),
     );
@@ -109,11 +111,16 @@ class CategoryTile extends StatelessWidget {
 
       },
       child: Container(
-        margin: EdgeInsets.only(right: 16),
+        margin: EdgeInsets.only(right: 16 , bottom: 10 , top: 10 ),
         child: Stack(
           children: <Widget> [
             ClipRRect( borderRadius: BorderRadius.circular(9),
-                child: Image.network(imageURL , width: 190 , height: 95 , fit: BoxFit.cover,),
+                child:
+                CachedNetworkImage(
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  imageUrl: imageURL , width: 190 , height: 95 , fit: BoxFit.cover,
+                ),
             )  ,
             Container(
               alignment: Alignment.center,
@@ -140,20 +147,33 @@ class CategoryTile extends StatelessWidget {
 
 
 
-class BlockTile extends StatelessWidget {
+class BlogTile extends StatelessWidget {
   final String imgUrl  ,  title,   description;
 
-  const BlockTile({ @required this.imgUrl, @required this.title,@required this.description}) ;
+  const BlogTile({ @required this.imgUrl, @required this.title,@required this.description}) ;
 
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.symmetric(horizontal: 16),
+
       child: Column(
-        children: [
-          Image.network(imgUrl) ,
-          Text(title) ,
-          Text(description)
+        children:<Widget> [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+              child: CachedNetworkImage(imageUrl: imgUrl)) ,
+          SizedBox(height: 8,),
+
+          Text(title , style: TextStyle(
+            fontSize: 17 , color: Colors.black87 , fontWeight: FontWeight.bold ,
+          ),) ,
+          SizedBox(height: 8,),
+
+          Text(description , textAlign: TextAlign.justify, style: TextStyle(
+            color: Colors.grey[600] ,
+          ),)
         ],
       ),
     );
