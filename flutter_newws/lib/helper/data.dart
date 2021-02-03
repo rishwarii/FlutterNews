@@ -16,7 +16,7 @@ categoryModel = new Category_Model() ;
 
 //2
 
-categoryModel.category_name = "Entertainment " ;
+categoryModel.category_name = "Entertainment" ;
 categoryModel.imgurl = "https://images.unsplash.com/photo-1486572788966-cfd3df1f5b42?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1052&q=80" ;
 category.add(categoryModel) ;
 categoryModel = new Category_Model() ;

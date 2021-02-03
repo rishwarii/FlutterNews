@@ -1,12 +1,46 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-class Article_View extends StatefulWidget {
+import 'package:webview_flutter/webview_flutter.dart';
+class ArticleView extends StatefulWidget {
+
+  final String blogURL  ;
+
+  const ArticleView({Key key, this.blogURL}) : super(key: key);
+
+
   @override
-  _Article_ViewState createState() => _Article_ViewState();
+  _ArticleViewState createState() => _ArticleViewState();
 }
 
-class _Article_ViewState extends State<Article_View> {
+class _ArticleViewState extends State<ArticleView> {
+final Completer<WebViewController> _completer = Completer<WebViewController>() ;
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("INSTA") ,
+            Text("News" , style: TextStyle(
+                color: Colors.blueAccent
+            ),)
+
+          ],
+        ),
+        elevation: 1 ,
+      ),
+      body: Container(
+
+        child: WebView(
+          initialUrl: widget.blogURL,
+          onWebViewCreated: (WebViewController webViewController ){
+            _completer.complete(webViewController) ;
+          },
+        ),
+      ),
+    );
   }
 }
