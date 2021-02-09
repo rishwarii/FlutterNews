@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_newws/Views/home.dart';
 import 'package:flutter_newws/helper/news.dart';
 import 'package:flutter_newws/models/article_model.dart';
+import 'tiles.dart';
+
 
 class Category_News extends StatefulWidget {
 
@@ -53,33 +56,38 @@ class _Category_NewsState extends State<Category_News> {
         elevation: 1 ,
       ),
 
+
+
       body:_loading ? Center(
         child: Container(
           child: CircularProgressIndicator(),
         ),
       )
-     : SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              Container(
-                child: ListView.builder(
-                    itemCount: articles.length ,
-                    shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
-                    itemBuilder: (context , index ){
-                      return BlogTile(
-                        imgUrl: articles[index].urlToimg  ?? "",
-                        title:  articles[index].title ?? " " ,
-                        description: articles[index].description ?? "",
-                        url: articles[index].url  ?? "Could Not Fetch URL",
-                      ) ;
-                    }),
-              )
-            ],
+     : Padding(
+       padding: const EdgeInsets.only(top : 8.0),
+       child: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  child: ListView.builder(
+                      itemCount: articles.length ,
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      itemBuilder: (context , index ){
+                        return BlogTile(
+                          imgUrl: articles[index].urlToimg  ?? "",
+                          title:  articles[index].title ?? " " ,
+                          description: articles[index].description ?? "",
+                          url: articles[index].url  ?? "Could Not Fetch URL",
+                        ) ;
+                      }),
+                )
+              ],
+            ),
           ),
         ),
-      ),
+     ),
     );
   }
 }

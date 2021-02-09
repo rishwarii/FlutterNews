@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_newws/models/article_model.dart';
 import 'package:http/http.dart' as http ;
 
@@ -67,4 +68,49 @@ class CategoryNewsClass {
     }
   }
 
+}
+
+class DataSearch extends SearchDelegate<String>{
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    // TODO: implement buildActions
+    return[
+      IconButton(icon: Icon(Icons.clear), onPressed: null)
+    ] ;
+
+    //actions of search bar
+
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    // TODO: implement buildLeading
+
+    return IconButton(icon: AnimatedIcon(
+      icon: AnimatedIcons.menu_arrow,
+    progress: transitionAnimation ,
+    )
+        , onPressed: null) ;
+
+
+
+    //leading icon on left
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // TODO: implement buildResults
+    throw UnimplementedError();
+
+    //show results
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // TODO: implement buildSuggestions
+    throw UnimplementedError();
+
+    // show suggestions when types
+  }
+  
 }
